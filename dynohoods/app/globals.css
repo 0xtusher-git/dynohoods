@@ -6,9 +6,9 @@
   color-scheme: dark;
   --background: #040b08;
   --surface: #07150f;
-  --foreground: #f4ede0;
-  --muted: #a8b39b;
-  --subtle: #5e6e5b;
+  --foreground: #ffffff;
+  --muted: #f3f3f3;
+  --subtle: #d0d0d0;
   --border: rgba(244, 237, 224, 0.12);
   --primary: #e8a33d;
   --danger: #ff5a33;
@@ -142,6 +142,15 @@ body {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
+  }
+
+  /* chic display serif — Magilio-like hero lockup */
+  .brand-title {
+    font-family: var(--font-display), "Playfair Display", Georgia, serif;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
   }
 
   /* arcade display heading */

@@ -6,7 +6,7 @@ import { isValidWallet, isValidXLink } from "@/lib/validation";
  * Does not change homepage / modal copy.
  */
 export const COLLECTION_NAME = siteConfig.projectName;
-export const COLLECTION_SUPPLY = 5000;
+export const COLLECTION_SUPPLY = 5555;
 export const WAITLIST_API_URL = "/api/waitlist";
 
 /**

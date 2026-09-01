@@ -12,23 +12,20 @@ export const siteConfig = {
   projectName: "Dynohoods",
   handle: "@Dynohoods",
   handleRaw: "Dynohoods",
-  tagline: "Survival of the loudest.",
+  tagline: "DYNOHOODS",
   description:
-    "Dynohoods are 5,000 jungle-punk dinos nesting on " +
-    "Robinhood Chain. Every trait is a rarity roll — and rarity decides " +
-    "who runs the swamp. Stake your spot before the herd stampedes.",
+    "Adopt the Dyno Hoods, the last surviving dinosaurs on Robinhood, and save the Earth!",
 
   /* ── social / pinned post ─────────────────────────────── */
   pinnedPostUrl: "https://x.com/Dynohoods/status/0000000000000000000", // ← real pinned post
   pinnedPostStatusId: "0000000000000000000",
 
   /* ── mint stats ───────────────────────────────────────── */
-  supply: 5000,
-  supplyDisplay: "5,000",
+  supply: 5555,
+  supplyDisplay: "5,555",
   mintStatus: "WHITELIST OPEN", // ─ swap to "MINTING NOW" / "SOLD OUT" when that happens
   chainName: "Robinhood Chain",
-  chainNote:
-    "Robinhood Chain is an EVM-compatible L2 — any standard 0x wallet works (MetaMask, Rabby, Robinhood Wallet).",
+  chainNote: "",
 
   /* ── marketplace ─────────────────────────────────────── */
   marketplace: { name: "OpenSea", url: "" }, // ← add URL once the listing is live
@@ -71,14 +68,8 @@ export const siteConfig = {
     },
   },
 
-  /* ── legal-ish small print ────────────────────────────── */
-  tokenDisclaimer:
-    "Dynohoods tokens are utility / in-game items, not an investment product. " +
-    "There is no promise of financial return and their value can go to zero. " +
-    "Only ever spend what you can afford to lose.",
-  disclaimer:
-    "Whitelisting here does not guarantee a slot if entries outnumber supply, " +
-    "and is not financial advice.",
+  tokenDisclaimer: "",
+  disclaimer: "",
 } as const;
 
 /**
@@ -95,46 +86,30 @@ export const socialLinks = {
   )}`,
 } as const;
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  THEME PALETTE — deep jungle green / swamp black base,
- *  amber-gold accent, bone-white text, blood-orange errors,
- *  teal glow for focus. Centralized: retune here.
- * ─────────────────────────────────────────────────────────────
- */
 export const themeColors = {
-  background: "#040B08", // swamp black-green
-  surface: "#07150F", // sunken moss
+  background: "#040B08",
+  surface: "#07150F",
   card: "rgba(255, 255, 255, 0.02)",
   border: "rgba(244, 237, 224, 0.12)",
-  borderSubtle: "#12261B", // moss line
-  foreground: "#F4EDE0", // bone white
-  muted: "#A8B39B", // weathered moss
-  subtle: "#5E6E5B", // deep moss-gray
-  primary: "#E8A33D", // amber gold
-  primaryFg: "#1A1203", // near-black on gold
-  danger: "#FF5A33", // blood orange
-  teal: "#40E0C0", // swamp glow
+  borderSubtle: "#12261B",
+  foreground: "#FFFFFF",
+  muted: "#F3F3F3",
+  subtle: "#D0D0D0",
+  primary: "#E8A33D",
+  primaryFg: "#1A1203",
+  danger: "#FF5A33",
+  teal: "#40E0C0",
   emerald: "#34D399",
 } as const;
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  FONTS — chunky arcade display + clean geometric sans body
- * ─────────────────────────────────────────────────────────────
- */
 export const fontFamilies: Record<string, string[]> = {
   sans: ["var(--font-inter)", "Inter", "system-ui", "-apple-system", "sans-serif"],
   inter: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
   arcade: ["var(--font-arcade)", "Press Start 2P", "Courier New", "monospace"],
+  display: ["var(--font-display)", "Playfair Display", "Georgia", "serif"],
   mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
 } as const;
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  WHITELIST TASKS — dino-voiced. Self-attested vs link-verified.
- * ─────────────────────────────────────────────────────────────
- */
 export const TASKS = [
   {
     id: "follow",
@@ -142,7 +117,7 @@ export const TASKS = [
     name: "Follow",
     instruction: "Follow the pack so you hear the herd before the herd hears you.",
     actionLabel: "Follow the pack",
-    attested: "self", // X doesn't expose follow data to third parties
+    attested: "self",
   },
   {
     id: "like",
@@ -177,7 +152,7 @@ export type TaskId = (typeof TASKS)[number]["id"];
 export const SITE_METADATA: Metadata = {
   title: `${siteConfig.projectName} — Whitelist Open`,
   description:
-    `5,000 jungle-punk dinos on ${siteConfig.chainName}. ` +
+    `5,555 Dyno Hoods on ${siteConfig.chainName}. ` +
     "Complete the checklist, verify your wallet, claim your spot before the stampede.",
   metadataBase: new URL("https://dynohoods.example"),
   openGraph: {

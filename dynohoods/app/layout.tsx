@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Press_Start_2P } from "next/font/google";
+import {
+  Anton,
+  Inter,
+  JetBrains_Mono,
+  Press_Start_2P,
+} from "next/font/google";
 import "./globals.css";
 import { SITE_METADATA } from "@/lib/theme";
 import ButtonClickSound from "@/components/ButtonClickSound";
@@ -14,6 +19,13 @@ const arcade = Press_Start_2P({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-arcade",
+  display: "swap",
+});
+
+const anton = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -33,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${arcade.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${arcade.variable} ${anton.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ButtonClickSound />
         {children}

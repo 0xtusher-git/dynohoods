@@ -24,8 +24,7 @@ export const siteConfig = {
   supplyDisplay: "5,555",
   mintStatus: "WHITELIST OPEN", // ─ swap to "MINTING NOW" / "SOLD OUT" when that happens
   chainName: "Robinhood Chain",
-  chainNote:
-    "Robinhood Chain is an EVM-compatible L2 — any standard 0x wallet works (MetaMask, Rabby, Robinhood Wallet).",
+  chainNote: "",
 
   /* ── marketplace ─────────────────────────────────────── */
   marketplace: { name: "OpenSea", url: "" }, // ← add URL once the listing is live
@@ -68,14 +67,8 @@ export const siteConfig = {
     },
   },
 
-  /* ── legal-ish small print ────────────────────────────── */
-  tokenDisclaimer:
-    "Dynohoods tokens are utility / in-game items, not an investment product. " +
-    "There is no promise of financial return and their value can go to zero. " +
-    "Only ever spend what you can afford to lose.",
-  disclaimer:
-    "Whitelisting here does not guarantee a slot if entries outnumber supply, " +
-    "and is not financial advice.",
+  tokenDisclaimer: "",
+  disclaimer: "",
 } as const;
 
 /**

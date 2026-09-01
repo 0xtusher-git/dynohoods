@@ -106,7 +106,7 @@ export const fontFamilies: Record<string, string[]> = {
   sans: ["var(--font-inter)", "Inter", "system-ui", "-apple-system", "sans-serif"],
   inter: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
   arcade: ["var(--font-arcade)", "Press Start 2P", "Courier New", "monospace"],
-  display: ["var(--font-display)", "Playfair Display", "Georgia", "serif"],
+  display: ["var(--font-display)", "Anton", "Impact", "sans-serif"],
   mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
 } as const;
 

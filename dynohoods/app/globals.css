@@ -144,13 +144,14 @@ body {
     color: var(--muted);
   }
 
-  /* chic display serif — Magilio-like hero lockup */
+  /* Anton display lockup — condensed athletic sans */
   .brand-title {
-    font-family: var(--font-display), "Playfair Display", Georgia, serif;
-    font-weight: 700;
+    font-family: var(--font-display), Anton, Impact, sans-serif;
+    font-weight: 400;
     font-style: normal;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     line-height: 0.9;
+    text-transform: uppercase;
   }
 
   /* arcade display heading */

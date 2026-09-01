@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import {
+  Anton,
   Inter,
   JetBrains_Mono,
-  Playfair_Display,
   Press_Start_2P,
 } from "next/font/google";
 import "./globals.css";
@@ -22,8 +22,8 @@ const arcade = Press_Start_2P({
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  weight: ["600", "700", "800"],
+const anton = Anton({
+  weight: "400",
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${arcade.variable} ${playfair.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${arcade.variable} ${anton.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ButtonClickSound />
         {children}

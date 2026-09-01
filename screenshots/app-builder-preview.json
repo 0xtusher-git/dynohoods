@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Dynohoods — Whitelist Open",
+      "hasCanvas": false,
+      "bodyTextLen": 1581,
+      "bodyTextHash": "e930bb76ddfee8580588cc467beeaeb48103682611b73cf7664839caca09407c",
+      "bodyTextPrefix": "DYNOHOODS First Look Details Get whitelisted 5,000 BANDITS. ONE ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Dynohoods — Whitelist Open",
+      "hasCanvas": false,
+      "bodyTextLen": 1562,
+      "bodyTextHash": "3d08b11830abab0a672cc0b0853cb6c00f9429ec9663985041e80b802bd649df",
+      "bodyTextPrefix": "DYNOHOODS Get whitelisted 5,000 BANDITS. ONE SWAMP. SURVIVAL OF ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

@@ -1,0 +1,40 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Dynohoods — Whitelist Open",
+      "hasCanvas": false,
+      "bodyTextLen": 1581,
+      "bodyTextHash": "e930bb76ddfee8580588cc467beeaeb48103682611b73cf7664839caca09407c",
+      "bodyTextPrefix": "DYNOHOODS First Look Details Get whitelisted 5,000 BANDITS. ONE ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/prod-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Dynohoods — Whitelist Open",
+      "hasCanvas": false,
+      "bodyTextLen": 1562,
+      "bodyTextHash": "3d08b11830abab0a672cc0b0853cb6c00f9429ec9663985041e80b802bd649df",
+      "bodyTextPrefix": "DYNOHOODS Get whitelisted 5,000 BANDITS. ONE SWAMP. SURVIVAL OF ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/prod-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [
+    "BRAND NOTE: no custom public/og.jpg — the platform will serve the og.grok.me placeholder. Custom cards are the default for games of every kind (DOM board/word games included), whimsical apps, creative tools, and brand-forward pages — only plain utilities (converters, CRUD trackers, admin dashboards) keep the placeholder. If this app is not a plain utility, finish the brand-asset pass per /workspace/.grok/skills/og/SKILL.md."
+  ],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/prod-preview.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

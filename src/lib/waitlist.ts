@@ -39,6 +39,7 @@ export interface WaitlistSubmission {
   xUsername: string;
   tasks: WaitlistTasks;
   quoteUrl: string;
+  replyUrl: string;
   submittedAt: string;
 }
 
@@ -108,6 +109,16 @@ export function quoteLinkError(value: string): string | null {
   }
   if (!isValidXPostUrl(value)) {
     return "Invalid X post link. Please paste a valid X/Twitter post URL.";
+  }
+  return null;
+}
+
+export function replyLinkError(value: string): string | null {
+  if (!value.trim()) {
+    return "Please enter your reply link.";
+  }
+  if (!isValidXPostUrl(value)) {
+    return "Invalid reply link. Please paste a valid X/Twitter post URL.";
   }
   return null;
 }
@@ -198,7 +209,8 @@ export async function submitWaitlist(
     !tasks.replied ||
     !tasks.reposted ||
     !tasks.quoted ||
-    !isValidXPostUrl(data.quoteUrl)
+    !isValidXPostUrl(data.quoteUrl) ||
+    !isValidXPostUrl(data.replyUrl)
   ) {
     return { ok: false, error: "Finish every mission before joining." };
   }

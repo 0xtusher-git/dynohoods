@@ -43,7 +43,7 @@ export default function TopBar() {
             decoding="async"
             className="h-7 w-7 rounded-lg object-cover ring-1 ring-white/10"
           />
-          <span className="arcade-title text-xs tracking-wide">
+          <span className="arcade-title font-brand text-lg tracking-[0.1em]">
             {siteConfig.projectName}
           </span>
         </Link>

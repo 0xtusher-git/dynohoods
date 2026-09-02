@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="relative mx-auto max-w-6xl px-5 py-12 sm:px-8">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-2.5">
-            <span className="arcade-title text-xs text-white">
+            <span className="arcade-title font-brand text-base text-white">
               {siteConfig.projectName}
             </span>
             <span className="text-white/70">·</span>

@@ -26,7 +26,7 @@ export default function CollectionCarousel() {
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <span className="chip">Collection showcase</span>
-          <h2 className="arcade-title mt-4 text-2xl text-white sm:text-3xl">
+          <h2 className="arcade-title font-brand mt-4 text-2xl text-white sm:text-3xl">
             First Look
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white sm:text-base">

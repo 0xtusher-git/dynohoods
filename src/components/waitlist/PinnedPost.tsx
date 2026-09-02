@@ -2,11 +2,13 @@ import { ExternalLink } from "lucide-react";
 import {
   COLLECTION_NAME,
   PINNED_POST_URL,
+  tweetIdFromUrl,
   isPinnedPostConfigured,
 } from "@/lib/waitlist";
 
 export default function PinnedPost() {
   const configured = isPinnedPostConfigured();
+  const tweetId = tweetIdFromUrl();
 
   const openPost = () => {
     if (!configured) return;
@@ -22,7 +24,7 @@ export default function PinnedPost() {
           </p>
           <h2
             id="pinned-heading"
-            className="arcade-title mt-1 text-sm text-foreground sm:text-base"
+            className="arcade-title font-brand mt-1 text-sm text-foreground sm:text-base"
           >
             Official pinned post
           </h2>
@@ -46,26 +48,26 @@ export default function PinnedPost() {
           </span>
         </div>
 
-        <div className="flex min-h-[160px] flex-col items-center justify-center px-6 py-10 text-center sm:min-h-[200px]">
-          {configured ? (
-            <>
-              <p className="text-sm text-foreground">
-                The official post is live. Open it on X to complete missions.
-              </p>
-              <p className="mt-2 max-w-sm break-all font-mono text-[0.65rem] text-subtle">
-                {PINNED_POST_URL}
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-sm text-foreground">Post embed placeholder</p>
-              <p className="mt-2 max-w-sm text-xs leading-relaxed text-subtle">
-                Set <span className="font-mono text-muted">PINNED_POST_URL</span>{" "}
-                to the real post. This page will not invent a tweet.
-              </p>
-            </>
-          )}
-        </div>
+        {configured && tweetId ? (
+          <div className="flex justify-center py-4">
+            <iframe
+              src={`https://platform.twitter.com/embed/Tweet.html?id=${tweetId}&theme=dark&chrome=footer,scrollbars`}
+              width="100%"
+              style={{ maxWidth: "550px" }}
+              height="500"
+              className="border-0"
+              title="Embedded tweet"
+            />
+          </div>
+        ) : (
+          <div className="flex min-h-[160px] flex-col items-center justify-center px-6 py-10 text-center sm:min-h-[200px]">
+            <p className="text-sm text-foreground">Post embed placeholder</p>
+            <p className="mt-2 max-w-sm text-xs leading-relaxed text-subtle">
+              Set <span className="font-mono text-muted">PINNED_POST_URL</span>{" "}
+              to the real post. This page will not invent a tweet.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

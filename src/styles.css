@@ -189,6 +189,11 @@ body {
     letter-spacing: 0.04em;
   }
 
+  /* brand wordmark typeface only — font-family matches .brand-title, nothing else */
+  .font-brand {
+    font-family: var(--font-display), Anton, Impact, sans-serif;
+  }
+
   /* micro-dot grid background */
   .dot-grid {
     background-image: radial-gradient(

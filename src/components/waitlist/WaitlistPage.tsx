@@ -1,7 +1,7 @@
-import { DEMO_MODE } from "@/lib/waitlist";
 import WaitlistHero from "@/components/waitlist/WaitlistHero";
 import {
   QuoteTaskCard,
+  ReplyTaskCard,
   UsernameTaskCard,
   XTaskCard,
 } from "@/components/waitlist/TaskCard";
@@ -10,6 +10,7 @@ import WalletInput from "@/components/waitlist/WalletInput";
 import WaitlistSubmit from "@/components/waitlist/WaitlistSubmit";
 import SuccessState from "@/components/waitlist/SuccessState";
 import { useWaitlistFlow } from "@/components/waitlist/useWaitlistFlow";
+import { DEMO_MODE } from "@/lib/waitlist";
 
 export default function WaitlistPage() {
   const flow = useWaitlistFlow();
@@ -28,13 +29,6 @@ export default function WaitlistPage() {
     <div className="mx-auto max-w-3xl px-5 pb-20 pt-6 sm:px-8">
       <WaitlistHero completed={flow.completedCount} />
 
-      {DEMO_MODE && (
-        <p className="mx-auto mt-6 max-w-xl text-center text-xs leading-relaxed text-subtle">
-          Demo mode is on. Verify is for testing the page — it does not confirm
-          a real like, reply, or repost on X.
-        </p>
-      )}
-
       <div className="my-10 flex justify-center">
         <div aria-hidden className="fossil-crack w-full max-w-md opacity-50" />
       </div>
@@ -45,7 +39,7 @@ export default function WaitlistPage() {
         </p>
         <h2
           id="missions-heading"
-          className="arcade-title mt-1 text-sm text-white sm:text-base"
+          className="arcade-title font-brand mt-1 text-sm text-white sm:text-base"
         >
           Task checklist
         </h2>
@@ -69,16 +63,14 @@ export default function WaitlistPage() {
             onAction={() => flow.openXTask("like")}
             onVerify={() => flow.verifyXTask("like")}
           />
-          <XTaskCard
-            num="03"
-            title="Reply"
-            instruction="Reply to the pinned post"
-            actionLabel="Reply"
-            taskId="reply"
-            state={flow.reply}
+          <ReplyTaskCard
+            replyUrl={flow.replyUrl}
+            done={flow.replyDone}
+            error={flow.replyError}
             disabledAction={!flow.postConfigured && !DEMO_MODE}
-            onAction={() => flow.openXTask("reply")}
-            onVerify={() => flow.verifyXTask("reply")}
+            onReply={() => flow.openXTask("reply")}
+            onChange={flow.setReplyUrl}
+            onVerify={flow.verifyReplyUrl}
           />
           <XTaskCard
             num="04"

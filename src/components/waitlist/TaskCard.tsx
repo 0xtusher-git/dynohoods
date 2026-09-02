@@ -1,6 +1,5 @@
 import { Check, ExternalLink, Loader2 } from "lucide-react";
 import XLogo from "@/components/waitlist/XLogo";
-import { DEMO_MODE } from "@/lib/waitlist";
 import type { TaskState, XTaskId } from "@/components/waitlist/useWaitlistFlow";
 
 const PLATE =
@@ -88,8 +87,6 @@ export function XTaskCard({
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     Checking
                   </>
-                ) : DEMO_MODE ? (
-                  "Verify (demo)"
                 ) : (
                   "Verify"
                 )}
@@ -354,6 +351,140 @@ export function QuoteTaskCard({
             </p>
           ) : (
             <p id="waitlist-quote-hint" className="sr-only">
+              Paste an x.com or twitter.com status link, then press VERIFY.
+              This only checks the link format.
+            </p>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+interface ReplyTaskCardProps {
+  replyUrl: string;
+  done: boolean;
+  error: string | null;
+  disabledAction: boolean;
+  onReply: () => void;
+  onChange: (value: string) => void;
+  onVerify: () => void;
+}
+
+export function ReplyTaskCard({
+  replyUrl,
+  done,
+  error,
+  disabledAction,
+  onReply,
+  onChange,
+  onVerify,
+}: ReplyTaskCardProps) {
+  return (
+    <article
+      className={`${PLATE} ${
+        done
+          ? "border-teal/40 bg-teal/[0.12]"
+          : "border-white/10 hover:border-teal/30"
+      }`}
+    >
+      <div className="flex items-start gap-3 sm:gap-4">
+        <span
+          className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${
+            done
+              ? "border-teal/40 bg-teal/10 text-teal"
+              : "border-white/10 bg-white/[0.03] text-muted"
+          }`}
+        >
+          {done ? <Check className="h-5 w-5" /> : <XLogo className="h-4 w-4" />}
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <p className="text-sm font-semibold text-white">
+              <span className="mr-1.5 font-mono text-xs text-subtle">03</span>
+              Reply
+            </p>
+            <StatusChip done={done} />
+          </div>
+          <p className="mt-1.5 text-xs leading-relaxed text-white sm:text-sm">
+            Reply to the pinned post — tag two friends, and tell us why you
+            want in.
+          </p>
+
+          <div className="mt-3">
+            <button
+              type="button"
+              onClick={onReply}
+              disabled={disabledAction}
+              className="btn btn-ghost min-h-11 px-4 py-2 text-xs sm:text-sm"
+            >
+              Reply
+              <ExternalLink className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          <label
+            htmlFor="waitlist-reply"
+            className="mt-4 block text-xs font-medium text-foreground"
+          >
+            Reply link
+          </label>
+          <input
+            id="waitlist-reply"
+            type="url"
+            inputMode="url"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="https://x.com/.../status/..."
+            value={replyUrl}
+            onChange={(e) => onChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                onVerify();
+              }
+            }}
+            aria-invalid={Boolean(error)}
+            aria-describedby={
+              error
+                ? "waitlist-reply-error"
+                : done
+                  ? "waitlist-reply-ok"
+                  : "waitlist-reply-hint"
+            }
+            className="field-input mt-1.5 font-mono text-xs"
+          />
+
+          {!done && (
+            <div className="mt-4 flex justify-center">
+              <button
+                type="button"
+                onClick={onVerify}
+                className="btn btn-primary min-h-11 min-w-28 px-6 py-2 text-xs tracking-wide sm:text-sm"
+              >
+                VERIFY
+              </button>
+            </div>
+          )}
+
+          {error ? (
+            <p
+              id="waitlist-reply-error"
+              role="alert"
+              className="mt-3 text-center text-xs text-danger"
+            >
+              {error}
+            </p>
+          ) : done ? (
+            <p
+              id="waitlist-reply-ok"
+              className="mt-3 text-center text-xs font-medium text-teal"
+            >
+              ✓ Valid reply link
+            </p>
+          ) : (
+            <p id="waitlist-reply-hint" className="sr-only">
               Paste an x.com or twitter.com status link, then press VERIFY.
               This only checks the link format.
             </p>

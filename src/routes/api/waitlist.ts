@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validation";
 import { DEMO_MODE, type WaitlistSubmission } from "@/lib/waitlist";
+import { supabase } from "@/lib/supabase";
 
 const seenWallets = new Set<string>();
 
@@ -31,6 +32,8 @@ export const Route = createFileRoute("/api/waitlist")({
 
         const quoteUrl =
           typeof body.quoteUrl === "string" ? body.quoteUrl.trim() : "";
+        const replyUrl =
+          typeof body.replyUrl === "string" ? body.replyUrl.trim() : "";
         const xUsername =
           typeof body.xUsername === "string" ? body.xUsername.trim() : "";
         const tasks = body.tasks;
@@ -42,7 +45,8 @@ export const Route = createFileRoute("/api/waitlist")({
           !tasks.replied ||
           !tasks.reposted ||
           !tasks.quoted ||
-          !isValidXPostUrl(quoteUrl)
+          !isValidXPostUrl(quoteUrl) ||
+          !isValidXPostUrl(replyUrl)
         ) {
           return Response.json(
             { ok: false, error: "All five missions must be complete." },
@@ -58,6 +62,34 @@ export const Route = createFileRoute("/api/waitlist")({
           );
         }
         seenWallets.add(key);
+
+        const { error: insertError } = await supabase
+          .from("whitelist_submissions")
+          .insert({
+            x_username: xUsername,
+            wallet_address: wallet,
+            quote_link: quoteUrl,
+            reply_link: typeof body.replyUrl === "string" ? body.replyUrl.trim() : "",
+            follow_confirmed: false,
+            like_confirmed: tasks.liked,
+          });
+
+        if (insertError) {
+          if (
+            insertError.code === "23505" &&
+            (insertError.message.includes("wallet_address") ||
+              insertError.message.includes("x_username"))
+          ) {
+            return Response.json(
+              { ok: false, error: "This wallet or X account has already submitted an entry." },
+              { status: 409 },
+            );
+          }
+          return Response.json(
+            { ok: false, error: "Failed to save submission." },
+            { status: 500 },
+          );
+        }
 
         return Response.json({ ok: true, demo: DEMO_MODE });
       },

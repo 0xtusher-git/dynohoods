@@ -12,14 +12,9 @@ export default function DetailsTeaser() {
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8">
       <div className="mx-auto max-w-2xl text-center">
         <span className="chip">More reading</span>
-        <h2 className="arcade-title mt-4 text-2xl text-white sm:text-3xl">
+        <h2 className="arcade-title font-brand mt-4 text-2xl text-white sm:text-3xl">
           The Details
         </h2>
-        <p className="mt-4 text-sm leading-relaxed text-white sm:text-base">
-          The full writeup — mint mechanics, trait odds, territory plans and
-          the story of how the swamp flooded — lives in the docs. Anything
-          still digging has a placeholder, perfectly normal for a hatchling.
-        </p>
       </div>
 
       <div className="mt-6 flex justify-center">
@@ -53,9 +48,19 @@ export default function DetailsTeaser() {
               <h3 className="mt-4 text-base font-semibold text-white">
                 {doc.title}
               </h3>
-              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-white">
-                {doc.desc}
-              </p>
+              {ready ? (
+                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-white">
+                  {doc.desc}
+                </p>
+              ) : key === "lore" ? (
+                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-white">
+                  {doc.desc}
+                </p>
+              ) : (
+                <p className="mt-3 flex-1 text-lg font-semibold text-primary">
+                  Coming Soon
+                </p>
+              )}
             </a>
           );
         })}

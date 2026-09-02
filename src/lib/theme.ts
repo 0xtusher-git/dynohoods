@@ -16,8 +16,8 @@ export const siteConfig = {
     "Adopt the Dyno Hoods, the last surviving dinosaurs on Robinhood, and save the Earth!",
 
   /* ── social / pinned post ─────────────────────────────── */
-  pinnedPostUrl: "https://x.com/Dynohoods/status/0000000000000000000", // ← real pinned post
-  pinnedPostStatusId: "0000000000000000000",
+  pinnedPostUrl: "https://x.com/dubbed90s/status/2094406669694378284",
+  pinnedPostStatusId: "2094406669694378284",
 
   /* ── mint stats ───────────────────────────────────────── */
   supply: 5555,

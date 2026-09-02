@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validation";
 import {
-  DEMO_MODE,
   TASK_TOTAL,
   quoteLinkError,
+  replyLinkError,
   usernameError,
   submitWaitlist,
   verifyLike,
@@ -41,6 +41,9 @@ export function useWaitlistFlow() {
   const [quoteUrl, setQuoteUrlState] = useState("");
   const [quoteVerified, setQuoteVerified] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
+  const [replyUrl, setReplyUrlState] = useState("");
+  const [replyVerified, setReplyVerified] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
   const [wallet, setWallet] = useState("");
   const [walletTouched, setWalletTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -114,7 +117,13 @@ export function useWaitlistFlow() {
     setQuoteUrlState(value);
     setQuoteVerified(false);
     setQuoteError(null);
-  }, []);
+    if (replyVerified && value.trim() && replyUrl.trim() && value.trim().toLowerCase() === replyUrl.trim().toLowerCase()) {
+      setReplyVerified(false);
+      setReplyError("This link is already used for another task — each one needs a different post.");
+    } else if (replyError === "This link is already used for another task — each one needs a different post.") {
+      setReplyError(null);
+    }
+  }, [replyUrl, replyVerified, replyError]);
 
   const verifyQuote = useCallback(() => {
     const error = quoteLinkError(quoteUrl);
@@ -123,22 +132,55 @@ export function useWaitlistFlow() {
       setQuoteError(error);
       return;
     }
+    if (replyUrl.trim() && quoteUrl.trim().toLowerCase() === replyUrl.trim().toLowerCase()) {
+      setQuoteVerified(false);
+      setQuoteError("This link is already used for another task — each one needs a different post.");
+      return;
+    }
     setQuoteError(null);
     setQuoteVerified(true);
-  }, [quoteUrl]);
+  }, [quoteUrl, replyUrl]);
+
+  const setReplyUrl = useCallback((value: string) => {
+    setReplyUrlState(value);
+    setReplyVerified(false);
+    setReplyError(null);
+    if (quoteVerified && value.trim() && quoteUrl.trim() && value.trim().toLowerCase() === quoteUrl.trim().toLowerCase()) {
+      setQuoteVerified(false);
+      setQuoteError("This link is already used for another task — each one needs a different post.");
+    } else if (quoteError === "This link is already used for another task — each one needs a different post.") {
+      setQuoteError(null);
+    }
+  }, [quoteUrl, quoteVerified, quoteError]);
+
+  const verifyReplyUrl = useCallback(() => {
+    const error = replyLinkError(replyUrl);
+    if (error) {
+      setReplyVerified(false);
+      setReplyError(error);
+      return;
+    }
+    if (quoteUrl.trim() && replyUrl.trim().toLowerCase() === quoteUrl.trim().toLowerCase()) {
+      setReplyVerified(false);
+      setReplyError("This link is already used for another task — each one needs a different post.");
+      return;
+    }
+    setReplyError(null);
+    setReplyVerified(true);
+  }, [replyUrl, quoteUrl]);
 
   const completedCount = useMemo(() => {
     return [
       usernameVerified,
       like.verified,
-      reply.verified,
+      replyVerified,
       repost.verified,
       quoteVerified,
     ].filter(Boolean).length;
   }, [
     usernameVerified,
     like.verified,
-    reply.verified,
+    replyVerified,
     repost.verified,
     quoteVerified,
   ]);
@@ -153,17 +195,19 @@ export function useWaitlistFlow() {
 
     const handleOk = usernameVerified && isValidXUsername(username);
     const quoted = quoteVerified && isValidXPostUrl(quoteUrl);
+    const replied = replyVerified && isValidXPostUrl(replyUrl);
     const payload: WaitlistSubmission = {
       walletAddress: wallet.trim(),
       xUsername: username.trim(),
       tasks: {
         usernameSubmitted: handleOk,
         liked: like.verified,
-        replied: reply.verified,
+        replied,
         reposted: repost.verified,
         quoted,
       },
       quoteUrl: quoteUrl.trim(),
+      replyUrl: replyUrl.trim(),
       submittedAt: new Date().toISOString(),
     };
 
@@ -182,6 +226,9 @@ export function useWaitlistFlow() {
       }
       if (!quoted) {
         setQuoteError(quoteLinkError(quoteUrl) ?? "Please enter your X post link.");
+      }
+      if (!replied) {
+        setReplyError(replyLinkError(replyUrl) ?? "Please enter your reply link.");
       }
       return;
     }
@@ -202,7 +249,8 @@ export function useWaitlistFlow() {
     like.verified,
     quoteUrl,
     quoteVerified,
-    reply.verified,
+    replyUrl,
+    replyVerified,
     repost.verified,
     submitting,
     username,
@@ -220,6 +268,9 @@ export function useWaitlistFlow() {
     quoteUrl,
     quoteError,
     quoteDone: quoteVerified,
+    replyUrl,
+    replyError,
+    replyDone: replyVerified,
     wallet,
     walletTouched,
     submitting,
@@ -235,6 +286,8 @@ export function useWaitlistFlow() {
     setUsername,
     verifyQuote,
     setQuoteUrl,
+    verifyReplyUrl,
+    setReplyUrl,
     setWallet,
     setWalletTouched,
     submit,

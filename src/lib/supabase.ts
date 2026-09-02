@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 function loadEnvLocal(): void {
   try {
@@ -19,15 +19,14 @@ function loadEnvLocal(): void {
 
 loadEnvLocal();
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+let client: SupabaseClient | null = null;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error(
-    "Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local",
-  );
+export function getSupabase(): SupabaseClient | null {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  if (!client) {
+    client = createClient(url, key, { auth: { persistSession: false } });
+  }
+  return client;
 }
-
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: { persistSession: false },
-});

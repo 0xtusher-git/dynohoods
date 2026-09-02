@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validation";
 import { DEMO_MODE, type WaitlistSubmission } from "@/lib/waitlist";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const seenWallets = new Set<string>();
 
@@ -62,6 +62,14 @@ export const Route = createFileRoute("/api/waitlist")({
           );
         }
         seenWallets.add(key);
+
+        const supabase = getSupabase();
+        if (!supabase) {
+          return Response.json(
+            { ok: false, error: "Waitlist storage is not configured on the server." },
+            { status: 500 },
+          );
+        }
 
         const { error: insertError } = await supabase
           .from("whitelist_submissions")

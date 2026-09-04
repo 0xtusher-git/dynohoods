@@ -75,12 +75,33 @@ export function xActionUrl(task: XTaskId): string | null {
     case "like":
       return `https://x.com/intent/like?tweet_id=${id}`;
     case "reply":
-      return `https://x.com/intent/tweet?in_reply_to=${id}`;
+      return replyDeepLink(id);
     case "repost":
       return `https://x.com/intent/retweet?tweet_id=${id}`;
     case "quote":
       return `https://x.com/intent/post?url=${encodeURIComponent(PINNED_POST_URL)}`;
   }
+}
+
+/**
+ * Reply deep-link.
+ *
+ * Desktop keeps the tracked X intent composer (`in_reply_to=…`). On mobile the
+ * X app's deep-link handler strips query parameters from that scheme, so it
+ * opens a blank "What's happening?" composer instead of a reply thread. The
+ * reliable cross-device fallback is to open the full tweet detail view
+ * (`x.com/i/status/<id>`) — the app loads the post page and the user taps the
+ * reply icon directly on the target post.
+ */
+export function replyDeepLink(tweetId: string, ua: string = ""): string {
+  const isMobile =
+    /Android|iPhone|iPad|iPod|Mobi(le)?|Opera Mini|IEMobile|BlackBerry/i.test(
+      ua || (typeof navigator !== "undefined" ? navigator.userAgent : ""),
+    );
+  if (!isMobile) {
+    return `https://x.com/intent/tweet?in_reply_to=${tweetId}`;
+  }
+  return `https://x.com/i/status/${tweetId}`;
 }
 
 export function shortAddress(addr: string): string {

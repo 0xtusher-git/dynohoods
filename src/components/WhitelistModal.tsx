@@ -238,7 +238,7 @@ function WhitelistFlow({ onClose }: { onClose: () => void }) {
 
   const walletError =
     (touched.wallet && draft.wallet && !isValidWallet(draft.wallet)
-      ? "That isn't a valid Robinhood Chain address — 0x followed by 40 hex characters."
+      ? "That isn't a valid Arc address — 0x followed by 40 hex characters."
       : undefined) ?? apiFields?.wallet;
 
   const validHandle = isValidHandle(draft.handle);

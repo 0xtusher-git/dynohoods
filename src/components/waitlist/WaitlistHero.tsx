@@ -1,4 +1,5 @@
-import { COLLECTION_NAME, COLLECTION_SUPPLY, TASK_TOTAL } from "@/lib/waitlist";
+import { COLLECTION_SUPPLY, TASK_TOTAL } from "@/lib/waitlist";
+import { siteConfig } from "@/lib/theme";
 import ProgressBar from "@/components/waitlist/ProgressBar";
 
 export default function WaitlistHero({ completed }: { completed: number }) {
@@ -7,7 +8,7 @@ export default function WaitlistHero({ completed }: { completed: number }) {
       <div className="mx-auto max-w-3xl text-center">
         <div className="mb-5 flex flex-wrap items-center justify-center gap-2">
           <span className="chip border-white/15 text-primary">
-            {COLLECTION_SUPPLY.toLocaleString()} · {COLLECTION_NAME}
+            {COLLECTION_SUPPLY.toLocaleString()} · {siteConfig.tagline}
           </span>
         </div>
 

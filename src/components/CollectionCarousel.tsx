@@ -53,7 +53,7 @@ export default function CollectionCarousel() {
             {hasImage ? (
               <img
                 src={slide.src}
-                alt={`Dynohoods preview #${slide.num}`}
+                alt={`Dyno Land preview #${slide.num}`}
                 width={800}
                 height={800}
                 decoding="async"

@@ -8,22 +8,22 @@
  */
 export const siteConfig = {
   /* ── identity ─────────────────────────────────────────── */
-  projectName: "Dynohoods",
+  projectName: "Dyno Land",
   handle: "@Dynohoods",
   handleRaw: "Dynohoods",
-  tagline: "DYNOHOODS",
+  tagline: "DYNO LAND",
   description:
-    "Adopt the Dyno Hoods, the last surviving dinosaurs on Robinhood, and save the Earth!",
+    "Adopt the Dyno Land, the last surviving dinosaurs on Arc, and save the Earth!",
 
   /* ── social / pinned post ─────────────────────────────── */
-  pinnedPostUrl: "https://x.com/dynohoods/status/2095749014276935988",
-  pinnedPostStatusId: "2095749014276935988",
+  pinnedPostUrl: "https://x.com/dynoland/status/2096467898378199225",
+  pinnedPostStatusId: "2096467898378199225",
 
   /* ── mint stats ───────────────────────────────────────── */
-  supply: 5555,
-  supplyDisplay: "5,555",
+  supply: 2222,
+  supplyDisplay: "2,222",
   mintStatus: "WHITELIST OPEN", // ─ swap to "MINTING NOW" / "SOLD OUT" when that happens
-  chainName: "Robinhood Chain",
+  chainName: "Arc",
   chainNote: "",
 
   /* ── marketplace ─────────────────────────────────────── */
@@ -167,7 +167,7 @@ export type TaskId = (typeof TASKS)[number]["id"];
 export const SITE_METADATA = {
   title: `${siteConfig.projectName} — Whitelist Open`,
   description:
-    `5,555 Dyno Hoods on ${siteConfig.chainName}. ` +
+    `2,222 Dyno Land on ${siteConfig.chainName}. ` +
     "Complete the checklist, verify your wallet, claim your spot before the stampede.",
   metadataBase: new URL("https://dynohoods.example"),
   openGraph: {

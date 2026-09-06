@@ -6,7 +6,7 @@ import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validati
  * Does not change homepage / modal copy.
  */
 export const COLLECTION_NAME = siteConfig.projectName;
-export const COLLECTION_SUPPLY = 5555;
+export const COLLECTION_SUPPLY = 2222;
 export const TASK_TOTAL = 5;
 export const WAITLIST_API_URL = "/api/waitlist";
 

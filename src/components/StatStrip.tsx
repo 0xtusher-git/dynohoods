@@ -5,7 +5,7 @@ export default function StatStrip() {
     siteConfig.marketplace.name || siteConfig.marketplace.url || "TBA";
 
   return (
-    <div className="mt-10 grid w-full max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 sm:mx-auto lg:grid-cols-4">
+    <div className="mt-16 grid w-full max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 sm:mx-auto lg:grid-cols-4">
       <div className="bg-background px-4 py-4 text-left">
         <p className="text-[0.65rem] font-semibold uppercase tracking-wider text-white/80">
           Total supply

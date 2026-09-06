@@ -9,8 +9,8 @@
 export const siteConfig = {
   /* ── identity ─────────────────────────────────────────── */
   projectName: "Dyno Land",
-  handle: "@Dynohoods",
-  handleRaw: "Dynohoods",
+  handle: "@dynoland",
+  handleRaw: "dynoland",
   tagline: "DYNO LAND",
   description:
     "Adopt the Dyno Land, the last surviving dinosaurs on Arc, and save the Earth!",

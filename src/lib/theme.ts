@@ -16,8 +16,8 @@ export const siteConfig = {
     "Adopt the Dyno Land, the last surviving dinosaurs on Arc, and save the Earth!",
 
   /* ── social / pinned post ─────────────────────────────── */
-  pinnedPostUrl: "https://x.com/dynoland/status/2096467898378199225",
-  pinnedPostStatusId: "2096467898378199225",
+  pinnedPostUrl: "https://x.com/dynoland/status/2096869440776200520",
+  pinnedPostStatusId: "2096869440776200520",
 
   /* ── mint stats ───────────────────────────────────────── */
   supply: 2222,

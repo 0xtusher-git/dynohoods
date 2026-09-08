@@ -41,6 +41,7 @@ export const Route = createFileRoute("/api/waitlist")({
           !tasks ||
           !tasks.usernameSubmitted ||
           !isValidXUsername(xUsername) ||
+          !tasks.followed ||
           !tasks.liked ||
           !tasks.replied ||
           !tasks.reposted ||
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/api/waitlist")({
           !isValidXPostUrl(replyUrl)
         ) {
           return Response.json(
-            { ok: false, error: "All five missions must be complete." },
+            { ok: false, error: "All six missions must be complete." },
             { status: 400 },
           );
         }
@@ -78,7 +79,7 @@ export const Route = createFileRoute("/api/waitlist")({
             wallet_address: wallet,
             quote_link: quoteUrl,
             reply_link: typeof body.replyUrl === "string" ? body.replyUrl.trim() : "",
-            follow_confirmed: false,
+            follow_confirmed: tasks.followed,
             like_confirmed: tasks.liked,
           });
 

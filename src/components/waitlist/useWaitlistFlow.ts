@@ -6,6 +6,7 @@ import {
   replyLinkError,
   usernameError,
   submitWaitlist,
+  verifyFollow,
   verifyLike,
   verifyReply,
   verifyRepost,
@@ -32,6 +33,7 @@ const EMPTY_TASK: TaskState = {
 };
 
 export function useWaitlistFlow() {
+  const [follow, setFollow] = useState<TaskState>(EMPTY_TASK);
   const [like, setLike] = useState<TaskState>(EMPTY_TASK);
   const [reply, setReply] = useState<TaskState>(EMPTY_TASK);
   const [repost, setRepost] = useState<TaskState>(EMPTY_TASK);
@@ -53,6 +55,7 @@ export function useWaitlistFlow() {
 
   const setTask = useCallback((id: XTaskId, patch: Partial<TaskState>) => {
     const apply = (prev: TaskState): TaskState => ({ ...prev, ...patch });
+    if (id === "follow") setFollow(apply);
     if (id === "like") setLike(apply);
     if (id === "reply") setReply(apply);
     if (id === "repost") setRepost(apply);
@@ -70,16 +73,17 @@ export function useWaitlistFlow() {
     },
     [setTask],
   );
-
   const verifyXTask = useCallback(
     async (id: Exclude<XTaskId, "quote">) => {
       setTask(id, { verifying: true, error: null });
       const run =
-        id === "like"
-          ? verifyLike
-          : id === "reply"
-            ? verifyReply
-            : verifyRepost;
+        id === "follow"
+          ? verifyFollow
+          : id === "like"
+            ? verifyLike
+            : id === "reply"
+              ? verifyReply
+              : verifyRepost;
       const result = await run();
       if (result.ok) {
         setTask(id, { verifying: false, verified: true, error: null });
@@ -171,6 +175,7 @@ export function useWaitlistFlow() {
 
   const completedCount = useMemo(() => {
     return [
+      follow.verified,
       usernameVerified,
       like.verified,
       replyVerified,
@@ -178,6 +183,7 @@ export function useWaitlistFlow() {
       quoteVerified,
     ].filter(Boolean).length;
   }, [
+    follow.verified,
     usernameVerified,
     like.verified,
     replyVerified,
@@ -201,6 +207,7 @@ export function useWaitlistFlow() {
       xUsername: username.trim(),
       tasks: {
         usernameSubmitted: handleOk,
+        followed: follow.verified,
         liked: like.verified,
         replied,
         reposted: repost.verified,
@@ -213,6 +220,7 @@ export function useWaitlistFlow() {
 
     if (
       !payload.tasks.usernameSubmitted ||
+      !payload.tasks.followed ||
       !payload.tasks.liked ||
       !payload.tasks.replied ||
       !payload.tasks.reposted ||
@@ -246,6 +254,7 @@ export function useWaitlistFlow() {
     }
     setSubmitting(false);
   }, [
+    follow.verified,
     like.verified,
     quoteUrl,
     quoteVerified,
@@ -259,6 +268,7 @@ export function useWaitlistFlow() {
   ]);
 
   return {
+    follow,
     like,
     reply,
     repost,

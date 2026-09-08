@@ -10,7 +10,7 @@ import WalletInput from "@/components/waitlist/WalletInput";
 import WaitlistSubmit from "@/components/waitlist/WaitlistSubmit";
 import SuccessState from "@/components/waitlist/SuccessState";
 import { useWaitlistFlow } from "@/components/waitlist/useWaitlistFlow";
-import { DEMO_MODE } from "@/lib/waitlist";
+import { DEMO_MODE, X_HANDLE } from "@/lib/waitlist";
 
 export default function WaitlistPage() {
   const flow = useWaitlistFlow();
@@ -45,7 +45,19 @@ export default function WaitlistPage() {
         </h2>
 
         <div className="mt-5 flex flex-col gap-3">
+          <XTaskCard
+            num="01"
+            title="Follow"
+            instruction={`Follow ${X_HANDLE} and turn on notifications so you never miss an update.`}
+            actionLabel="Follow"
+            taskId="follow"
+            state={flow.follow}
+            disabledAction={false}
+            onAction={() => flow.openXTask("follow")}
+            onVerify={() => flow.verifyXTask("follow")}
+          />
           <UsernameTaskCard
+            num="02"
             username={flow.username}
             done={flow.usernameDone}
             error={flow.usernameError}
@@ -53,7 +65,7 @@ export default function WaitlistPage() {
             onSubmit={flow.submitUsername}
           />
           <XTaskCard
-            num="02"
+            num="03"
             title="Like"
             instruction="Like the pinned post"
             actionLabel="Like post"
@@ -64,6 +76,7 @@ export default function WaitlistPage() {
             onVerify={() => flow.verifyXTask("like")}
           />
           <ReplyTaskCard
+            num="04"
             replyUrl={flow.replyUrl}
             done={flow.replyDone}
             error={flow.replyError}
@@ -73,7 +86,7 @@ export default function WaitlistPage() {
             onVerify={flow.verifyReplyUrl}
           />
           <XTaskCard
-            num="04"
+            num="05"
             title="Repost"
             instruction="Repost the pinned post"
             actionLabel="Repost"
@@ -84,6 +97,7 @@ export default function WaitlistPage() {
             onVerify={() => flow.verifyXTask("repost")}
           />
           <QuoteTaskCard
+            num="06"
             quoteUrl={flow.quoteUrl}
             done={flow.quoteDone}
             error={flow.quoteError}

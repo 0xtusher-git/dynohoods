@@ -113,6 +113,7 @@ export function XTaskCard({
 }
 
 interface UsernameTaskCardProps {
+  num: string;
   username: string;
   done: boolean;
   error: string | null;
@@ -121,6 +122,7 @@ interface UsernameTaskCardProps {
 }
 
 export function UsernameTaskCard({
+  num,
   username,
   done,
   error,
@@ -149,7 +151,7 @@ export function UsernameTaskCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <p className="text-sm font-semibold text-white">
-              <span className="mr-1.5 font-mono text-xs text-subtle">01</span>
+              <span className="mr-1.5 font-mono text-xs text-subtle">{num}</span>
               Username
             </p>
             <StatusChip done={done} />
@@ -229,6 +231,7 @@ export function UsernameTaskCard({
 }
 
 interface QuoteTaskCardProps {
+  num: string;
   quoteUrl: string;
   done: boolean;
   error: string | null;
@@ -239,6 +242,7 @@ interface QuoteTaskCardProps {
 }
 
 export function QuoteTaskCard({
+  num,
   quoteUrl,
   done,
   error,
@@ -269,7 +273,7 @@ export function QuoteTaskCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <p className="text-sm font-semibold text-white">
-              <span className="mr-1.5 font-mono text-xs text-subtle">05</span>
+              <span className="mr-1.5 font-mono text-xs text-subtle">{num}</span>
               Quote
             </p>
             <StatusChip done={done} />
@@ -362,6 +366,7 @@ export function QuoteTaskCard({
 }
 
 interface ReplyTaskCardProps {
+  num: string;
   replyUrl: string;
   done: boolean;
   error: string | null;
@@ -372,6 +377,7 @@ interface ReplyTaskCardProps {
 }
 
 export function ReplyTaskCard({
+  num,
   replyUrl,
   done,
   error,
@@ -402,7 +408,7 @@ export function ReplyTaskCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <p className="text-sm font-semibold text-white">
-              <span className="mr-1.5 font-mono text-xs text-subtle">03</span>
+              <span className="mr-1.5 font-mono text-xs text-subtle">{num}</span>
               Reply
             </p>
             <StatusChip done={done} />

@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/theme";
+import { siteConfig, socialLinks } from "@/lib/theme";
 import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validation";
 
 /**
@@ -7,8 +7,9 @@ import { isValidWallet, isValidXPostUrl, isValidXUsername } from "@/lib/validati
  */
 export const COLLECTION_NAME = siteConfig.projectName;
 export const COLLECTION_SUPPLY = 2222;
-export const TASK_TOTAL = 5;
+export const TASK_TOTAL = 6;
 export const WAITLIST_API_URL = "/api/waitlist";
+export const X_HANDLE = siteConfig.handle;
 
 /**
  * Official pinned post. Leave empty (or the theme placeholder) until the
@@ -24,10 +25,11 @@ export const PINNED_POST_URL: string = siteConfig.pinnedPostUrl;
  */
 export const DEMO_MODE = true;
 
-export type XTaskId = "like" | "reply" | "repost" | "quote";
+export type XTaskId = "follow" | "like" | "reply" | "repost" | "quote";
 
 export interface WaitlistTasks {
   usernameSubmitted: boolean;
+  followed: boolean;
   liked: boolean;
   replied: boolean;
   reposted: boolean;
@@ -68,18 +70,21 @@ export function tweetIdFromUrl(url: string = PINNED_POST_URL): string | null {
 }
 
 export function xActionUrl(task: XTaskId): string | null {
-  if (!isPinnedPostConfigured()) return null;
-  const id = tweetIdFromUrl();
-  if (!id) return PINNED_POST_URL;
   switch (task) {
+    case "follow":
+      return socialLinks.follow;
     case "like":
-      return `https://x.com/intent/like?tweet_id=${id}`;
     case "reply":
-      return replyDeepLink(id);
     case "repost":
-      return `https://x.com/intent/retweet?tweet_id=${id}`;
-    case "quote":
+    case "quote": {
+      if (!isPinnedPostConfigured()) return null;
+      const id = tweetIdFromUrl();
+      if (!id) return PINNED_POST_URL;
+      if (task === "like") return `https://x.com/intent/like?tweet_id=${id}`;
+      if (task === "reply") return replyDeepLink(id);
+      if (task === "repost") return `https://x.com/intent/retweet?tweet_id=${id}`;
       return `https://x.com/intent/post?url=${encodeURIComponent(PINNED_POST_URL)}`;
+    }
   }
 }
 
@@ -185,6 +190,17 @@ export async function verifyRepost(): Promise<VerifyResult> {
   return verifyXTask("repost");
 }
 
+/**
+ * verifyFollow()
+ *
+ * Self-attested: X doesn't expose follow/notification status to third
+ * parties, so like Like/Repost this cannot be independently verified —
+ * the user's click marks it done.
+ */
+export async function verifyFollow(): Promise<VerifyResult> {
+  return verifyXTask("follow");
+}
+
 async function verifyXTask(action: Exclude<XTaskId, "quote">): Promise<VerifyResult> {
   if (DEMO_MODE) {
     // Demo only — does not mean the user actually performed the action.
@@ -226,6 +242,7 @@ export async function submitWaitlist(
   if (
     !tasks.usernameSubmitted ||
     !isValidXUsername(data.xUsername) ||
+    !tasks.followed ||
     !tasks.liked ||
     !tasks.replied ||
     !tasks.reposted ||

@@ -58,6 +58,12 @@ export default function TopBar() {
               {l.label}
             </a>
           ))}
+          <Link
+            to="/special-150"
+            className="claw-link text-sm font-medium text-white transition-colors hover:text-white"
+          >
+            Special 150
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2.5">

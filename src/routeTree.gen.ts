@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Special150RouteImport } from './routes/special-150'
 import { Route as WaitlistRouteImport } from './routes/waitlist'
+import { Route as ApiSpecial150RouteImport } from './routes/api/special150'
 import { Route as ApiWaitlistRouteImport } from './routes/api/waitlist'
 import { Route as ApiWaitlistVerifyRouteImport } from './routes/api/waitlist.verify'
 
@@ -19,9 +21,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Special150Route = Special150RouteImport.update({
+  id: '/special-150',
+  path: '/special-150',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WaitlistRoute = WaitlistRouteImport.update({
   id: '/waitlist',
   path: '/waitlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpecial150Route = ApiSpecial150RouteImport.update({
+  id: '/api/special150',
+  path: '/api/special150',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiWaitlistRoute = ApiWaitlistRouteImport.update({
@@ -37,34 +49,61 @@ const ApiWaitlistVerifyRoute = ApiWaitlistVerifyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/special-150': typeof Special150Route
   '/waitlist': typeof WaitlistRoute
+  '/api/special150': typeof ApiSpecial150Route
   '/api/waitlist': typeof ApiWaitlistRouteWithChildren
   '/api/waitlist/verify': typeof ApiWaitlistVerifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/special-150': typeof Special150Route
   '/waitlist': typeof WaitlistRoute
+  '/api/special150': typeof ApiSpecial150Route
   '/api/waitlist': typeof ApiWaitlistRouteWithChildren
   '/api/waitlist/verify': typeof ApiWaitlistVerifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/special-150': typeof Special150Route
   '/waitlist': typeof WaitlistRoute
+  '/api/special150': typeof ApiSpecial150Route
   '/api/waitlist': typeof ApiWaitlistRouteWithChildren
   '/api/waitlist/verify': typeof ApiWaitlistVerifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/waitlist' | '/api/waitlist' | '/api/waitlist/verify'
+  fullPaths:
+    | '/'
+    | '/special-150'
+    | '/waitlist'
+    | '/api/special150'
+    | '/api/waitlist'
+    | '/api/waitlist/verify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/waitlist' | '/api/waitlist' | '/api/waitlist/verify'
-  id: '__root__' | '/' | '/waitlist' | '/api/waitlist' | '/api/waitlist/verify'
+  to:
+    | '/'
+    | '/special-150'
+    | '/waitlist'
+    | '/api/special150'
+    | '/api/waitlist'
+    | '/api/waitlist/verify'
+  id:
+    | '__root__'
+    | '/'
+    | '/special-150'
+    | '/waitlist'
+    | '/api/special150'
+    | '/api/waitlist'
+    | '/api/waitlist/verify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Special150Route: typeof Special150Route
   WaitlistRoute: typeof WaitlistRoute
+  ApiSpecial150Route: typeof ApiSpecial150Route
   ApiWaitlistRoute: typeof ApiWaitlistRouteWithChildren
 }
 
@@ -77,11 +116,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/special-150': {
+      id: '/special-150'
+      path: '/special-150'
+      fullPath: '/special-150'
+      preLoaderRoute: typeof Special150RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/waitlist': {
       id: '/waitlist'
       path: '/waitlist'
       fullPath: '/waitlist'
       preLoaderRoute: typeof WaitlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/special150': {
+      id: '/api/special150'
+      path: '/api/special150'
+      fullPath: '/api/special150'
+      preLoaderRoute: typeof ApiSpecial150RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/waitlist': {
@@ -115,7 +168,9 @@ const ApiWaitlistRouteWithChildren = ApiWaitlistRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Special150Route: Special150Route,
   WaitlistRoute: WaitlistRoute,
+  ApiSpecial150Route: ApiSpecial150Route,
   ApiWaitlistRoute: ApiWaitlistRouteWithChildren,
 }
 export const routeTree = rootRouteImport

@@ -34,7 +34,7 @@ export const Route = createFileRoute("/api/special150")({
         const { data, error } = await supabase
           .from(ELIGIBLE_TABLE)
           .select("x_username")
-          .ilike("x_username", username);
+          .or(`x_username.ilike.${username},x_username.ilike.@${username}`);
 
         if (error) {
           return Response.json(
@@ -86,7 +86,7 @@ export const Route = createFileRoute("/api/special150")({
         const { data: existing, error: checkError } = await supabase
           .from(REQUESTS_TABLE)
           .select("x_username")
-          .ilike("x_username", username);
+          .or(`x_username.ilike.${username},x_username.ilike.@${username}`);
 
         if (checkError) {
           return Response.json(

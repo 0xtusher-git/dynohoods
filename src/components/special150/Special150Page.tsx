@@ -12,11 +12,11 @@ import { siteConfig } from "@/lib/theme";
 const ELIGIBLE_COUNT = 150;
 
 const SPECIAL_150_CARDS = [
-  "/cards/card-1.png",
-  "/cards/card-2.png",
-  "/cards/card-3.png",
-  "/cards/card-4.png",
-  "/cards/card-5.png",
+  "/cards/card-1.jpg",
+  "/cards/card-2.jpg",
+  "/cards/card-3.jpg",
+  "/cards/card-4.jpg",
+  "/cards/card-5.jpg",
 ];
 
 const SPECIAL_150_TWEET = `Guys....👀
@@ -82,22 +82,41 @@ export default function Special150Page() {
 
   const shareOnX = async () => {
     if (!cardUrl) return;
-    let copied = false;
+
     try {
       const res = await fetch(cardUrl);
       const blob = await res.blob();
-      const imageType = blob.type || "image/png";
-      const item = new ClipboardItem({ [imageType]: blob });
+      const fileName = cardUrl.split("/").pop() ?? "special-150-card.jpg";
+      const file = new File([blob], fileName, {
+        type: blob.type || "image/jpeg",
+      });
+
+      // Native share sheet with the image attached (Android/iOS X app) —
+      // taps a real "post" with the card already attached.
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text: SPECIAL_150_TWEET });
+          setClipboardNote(null);
+          return;
+        } catch {
+          // user cancelled the share sheet — fall through to clipboard
+        }
+      }
+
+      // Desktop fallback: browsers only copy image/png to the clipboard,
+      // so convert the JPEG to PNG first, then open the composer.
+      const png = await toPngBlob(blob);
+      const item = new ClipboardItem({ "image/png": png });
       await navigator.clipboard.write([item]);
-      copied = true;
+      setClipboardNote(
+        "Your card is copied — open the post and press Ctrl/⌘+V to attach it.",
+      );
     } catch {
-      copied = false;
+      setClipboardNote(
+        "Couldn't auto-copy the card — use the download button and attach it in the composer.",
+      );
     }
-    setClipboardNote(
-      copied
-        ? "Your card is copied — paste it (Ctrl/⌘+V) into the post to attach it."
-        : "X can't auto-attach images — download the card and attach it in the composer.",
-    );
+
     window.open(X_POST_URL, "_blank", "noopener,noreferrer");
   };
 
@@ -358,4 +377,33 @@ export default function Special150Page() {
       )}
     </div>
   );
+}
+
+function toPngBlob(blob: Blob): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        reject(new Error("canvas context unavailable"));
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("png encode failed"))),
+        "image/png",
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("image decode failed"));
+    };
+    img.src = url;
+  });
 }

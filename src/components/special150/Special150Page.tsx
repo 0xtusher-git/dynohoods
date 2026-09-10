@@ -83,39 +83,12 @@ export default function Special150Page() {
   const shareOnX = async () => {
     if (!cardUrl) return;
 
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(
-      navigator.userAgent,
-    );
-    const canWebShare = typeof navigator.share === "function";
-
-    // Phone: open the native share sheet with the card attached as a file,
-    // so tapping the X app starts a post with the image already attached.
-    if (isMobile && canWebShare) {
-      let handledWithShare = false;
-      try {
-        const res = await fetch(cardUrl);
-        const blob = await res.blob();
-        const file = new File(
-          [blob],
-          cardUrl.split("/").pop() ?? "special-150-card.jpg",
-          { type: blob.type || "image/jpeg" },
-        );
-        if (navigator.canShare && !navigator.canShare({ files: [file] })) {
-          throw new Error("file share unsupported");
-        }
-        await navigator.share({ files: [file], text: SPECIAL_150_TWEET });
-        handledWithShare = true;
-      } catch {
-        // fall through to the tab + clipboard path
-      }
-      if (handledWithShare) return;
-    }
-
-    // Desktop + fallback: open the composer tab FIRST (synchronous — keeps
-    // the click's user activation so the popup isn't blocked), then copy the
-    // card to the clipboard so the user just presses Ctrl/Cmd+V to attach it.
+    // Open the X composer synchronously in the tap so no popup blocker can
+    // swallow it — this is the whole point of the button, on every device.
     window.open(X_POST_URL, "_blank", "noopener,noreferrer");
 
+    // Best-effort image attach: copy the card to the clipboard so it can be
+    // pasted into the post (Ctrl/⌘+V, or long-press on phones).
     try {
       const res = await fetch(cardUrl);
       const blob = await res.blob();

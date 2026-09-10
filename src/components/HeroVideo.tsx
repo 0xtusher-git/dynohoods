@@ -1,5 +1,6 @@
 import StatStrip from "@/components/StatStrip";
 import { GetWhitelistedButton } from "@/components/captcha/CaptchaProvider";
+import { Link } from "@tanstack/react-router";
 import { siteConfig } from "@/lib/theme";
 
 export default function HeroVideo() {
@@ -22,6 +23,12 @@ export default function HeroVideo() {
           >
             Take the first look
           </a>
+          <Link
+            to="/special-150"
+            className="btn btn-special px-7 py-3 text-base"
+          >
+            Special 150
+          </Link>
         </div>
 
         <StatStrip />

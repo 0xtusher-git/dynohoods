@@ -1,8 +1,33 @@
-import { useState } from "react";
-import { CheckCircle2, Loader2, Search, Send } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  CheckCircle2,
+  Download,
+  Loader2,
+  Search,
+  Send,
+} from "lucide-react";
+import XLogo from "@/components/waitlist/XLogo";
 import { siteConfig } from "@/lib/theme";
 
 const ELIGIBLE_COUNT = 150;
+
+const SPECIAL_150_CARDS = [
+  "/cards/card-1.png",
+  "/cards/card-2.png",
+  "/cards/card-3.png",
+  "/cards/card-4.png",
+  "/cards/card-5.png",
+];
+
+const SPECIAL_150_TWEET = `Guys....👀
+
+I just found myself in 150 Specials Honorary Collection on ${siteConfig.handle}
+
+Check yours if you're in or not: dynohoods.xyz/special-150`;
+
+const X_POST_URL = `https://x.com/intent/post?text=${encodeURIComponent(
+  SPECIAL_150_TWEET,
+)}`;
 
 type CheckResult = "eligible" | "not-eligible" | null;
 
@@ -11,11 +36,19 @@ export default function Special150Page() {
   const [checking, setChecking] = useState(false);
   const [checkError, setCheckError] = useState<string | null>(null);
   const [result, setResult] = useState<CheckResult>(null);
+  const [cardIndex, setCardIndex] = useState<number | null>(null);
+  const [clipboardNote, setClipboardNote] = useState<string | null>(null);
 
   const [reason, setReason] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [requestDone, setRequestDone] = useState(false);
+
+  const cardUrl = useMemo(
+    () =>
+      cardIndex === null ? null : SPECIAL_150_CARDS[cardIndex % SPECIAL_150_CARDS.length],
+    [cardIndex],
+  );
 
   const checkEligibility = async () => {
     const trimmed = username.trim();
@@ -25,6 +58,7 @@ export default function Special150Page() {
     }
     setCheckError(null);
     setResult(null);
+    setClipboardNote(null);
     setChecking(true);
     try {
       const res = await fetch(
@@ -34,6 +68,9 @@ export default function Special150Page() {
       if (!res.ok) {
         setCheckError(data.error ?? "Could not check eligibility.");
       } else {
+        if (data.eligible) {
+          setCardIndex(Math.floor(Math.random() * SPECIAL_150_CARDS.length));
+        }
         setResult(data.eligible ? "eligible" : "not-eligible");
       }
     } catch {
@@ -41,6 +78,27 @@ export default function Special150Page() {
     } finally {
       setChecking(false);
     }
+  };
+
+  const shareOnX = async () => {
+    if (!cardUrl) return;
+    let copied = false;
+    try {
+      const res = await fetch(cardUrl);
+      const blob = await res.blob();
+      const imageType = blob.type || "image/png";
+      const item = new ClipboardItem({ [imageType]: blob });
+      await navigator.clipboard.write([item]);
+      copied = true;
+    } catch {
+      copied = false;
+    }
+    setClipboardNote(
+      copied
+        ? "Your card is copied — paste it (Ctrl/⌘+V) into the post to attach it."
+        : "X can't auto-attach images — download the card and attach it in the composer.",
+    );
+    window.open(X_POST_URL, "_blank", "noopener,noreferrer");
   };
 
   const submitRequest = async () => {
@@ -75,6 +133,8 @@ export default function Special150Page() {
     setRequestError(null);
     setRequestDone(false);
     setReason("");
+    setClipboardNote(null);
+    setCardIndex(null);
   };
 
   return (
@@ -146,24 +206,53 @@ export default function Special150Page() {
 
       {result === "eligible" && (
         <>
-          <section className="mx-auto max-w-md overflow-hidden rounded-xl border border-teal/40 bg-surface text-center shadow-card">
-            <div className="space-y-4 p-8">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-teal/40 bg-teal/10">
-                <CheckCircle2 className="h-8 w-8 text-teal" />
+          <section className="mx-auto flex max-w-md flex-col items-center text-center">
+            <h2 className="arcade-title text-xl leading-relaxed text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.75)] sm:text-2xl">
+              Congratulations!! You&apos;re In Special 150
+            </h2>
+
+            {cardUrl && (
+              <div className="mt-6 w-full overflow-hidden rounded-xl border border-teal/30 bg-surface shadow-glow">
+                <img
+                  src={cardUrl}
+                  alt="Your Special 150 honorary NFT card"
+                  className="block h-auto w-full"
+                  loading="eager"
+                />
               </div>
-              <h2 className="arcade-title text-xl text-foreground sm:text-2xl">
-                You&apos;re eligible
-              </h2>
-              <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted">
-                You&apos;ve secured your spot for one of the {ELIGIBLE_COUNT}{" "}
-                honorary {siteConfig.projectName} NFTs reserved for CT members.
-              </p>
-              <p className="mx-auto max-w-sm text-xs leading-relaxed text-subtle">
-                Mint details are coming soon. Keep an eye on {siteConfig.handle}{" "}
-                for the exact date and next steps.
-              </p>
+            )}
+
+            <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+              <a
+                href={cardUrl ?? "#"}
+                download={cardUrl ? cardUrl.split("/").pop() : undefined}
+                className="btn btn-primary min-h-12 flex-1 px-5 text-sm"
+              >
+                <Download className="h-4 w-4" />
+                Download the Card as image
+              </a>
+              <button
+                type="button"
+                onClick={shareOnX}
+                className="btn btn-ghost min-h-12 flex-1 px-5 text-sm"
+              >
+                <XLogo className="h-4 w-4" />
+                X post
+              </button>
             </div>
+
+            {clipboardNote && (
+              <p className="mt-3 max-w-sm text-xs leading-relaxed text-subtle">
+                {clipboardNote}
+              </p>
+            )}
+
+            <p className="mt-6 max-w-sm text-xs leading-relaxed text-muted">
+              Mint details are coming soon. Keep an eye on {siteConfig.handle}{" "}
+              for the exact date and next steps.
+            </p>
           </section>
+
           <div className="mt-8 text-center">
             <button
               type="button"

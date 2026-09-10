@@ -69,7 +69,7 @@ export default function Special150Page() {
         setCheckError(data.error ?? "Could not check eligibility.");
       } else {
         if (data.eligible) {
-          setCardIndex(Math.floor(Math.random() * SPECIAL_150_CARDS.length));
+          setCardIndex(cardIndexForUsername(trimmed));
         }
         setResult(data.eligible ? "eligible" : "not-eligible");
       }
@@ -83,41 +83,53 @@ export default function Special150Page() {
   const shareOnX = async () => {
     if (!cardUrl) return;
 
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(
+      navigator.userAgent,
+    );
+    const canWebShare = typeof navigator.share === "function";
+
+    // Phone: open the native share sheet with the card attached as a file,
+    // so tapping the X app starts a post with the image already attached.
+    if (isMobile && canWebShare) {
+      let handledWithShare = false;
+      try {
+        const res = await fetch(cardUrl);
+        const blob = await res.blob();
+        const file = new File(
+          [blob],
+          cardUrl.split("/").pop() ?? "special-150-card.jpg",
+          { type: blob.type || "image/jpeg" },
+        );
+        if (navigator.canShare && !navigator.canShare({ files: [file] })) {
+          throw new Error("file share unsupported");
+        }
+        await navigator.share({ files: [file], text: SPECIAL_150_TWEET });
+        handledWithShare = true;
+      } catch {
+        // fall through to the tab + clipboard path
+      }
+      if (handledWithShare) return;
+    }
+
+    // Desktop + fallback: open the composer tab FIRST (synchronous — keeps
+    // the click's user activation so the popup isn't blocked), then copy the
+    // card to the clipboard so the user just presses Ctrl/Cmd+V to attach it.
+    window.open(X_POST_URL, "_blank", "noopener,noreferrer");
+
     try {
       const res = await fetch(cardUrl);
       const blob = await res.blob();
-      const fileName = cardUrl.split("/").pop() ?? "special-150-card.jpg";
-      const file = new File([blob], fileName, {
-        type: blob.type || "image/jpeg",
-      });
-
-      // Native share sheet with the image attached (Android/iOS X app) —
-      // taps a real "post" with the card already attached.
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], text: SPECIAL_150_TWEET });
-          setClipboardNote(null);
-          return;
-        } catch {
-          // user cancelled the share sheet — fall through to clipboard
-        }
-      }
-
-      // Desktop fallback: browsers only copy image/png to the clipboard,
-      // so convert the JPEG to PNG first, then open the composer.
       const png = await toPngBlob(blob);
       const item = new ClipboardItem({ "image/png": png });
       await navigator.clipboard.write([item]);
       setClipboardNote(
-        "Your card is copied — open the post and press Ctrl/⌘+V to attach it.",
+        "Your card is copied — press Ctrl/⌘+V inside the post to attach it.",
       );
     } catch {
       setClipboardNote(
-        "Couldn't auto-copy the card — use the download button and attach it in the composer.",
+        "Couldn't auto-copy the card — use the download button and attach it in the post.",
       );
     }
-
-    window.open(X_POST_URL, "_blank", "noopener,noreferrer");
   };
 
   const submitRequest = async () => {
@@ -406,4 +418,13 @@ function toPngBlob(blob: Blob): Promise<Blob> {
     };
     img.src = url;
   });
+}
+
+function cardIndexForUsername(username: string): number {
+  const key = username.trim().replace(/^@/, "").toLowerCase();
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return hash % SPECIAL_150_CARDS.length;
 }

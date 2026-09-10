@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Check, Copy, Menu, X } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { GetWhitelistedButton } from "@/components/captcha/CaptchaProvider";
 import { siteConfig } from "@/lib/theme";
@@ -15,7 +15,6 @@ function shortAddress(addr: string) {
 
 export default function TopBar() {
   const [copied, setCopied] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const hasContract = siteConfig.contractAddress.length > 0;
   const marketplaceLive = siteConfig.marketplace.url.length > 0;
 
@@ -96,50 +95,29 @@ export default function TopBar() {
           ) : (
             <GetWhitelistedButton className="btn btn-primary px-4 py-2 text-sm" />
           )}
-
-          <button
-            type="button"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-nav"
-            className="-mr-1 flex h-10 w-10 items-center justify-center rounded-lg text-muted transition-colors hover:text-foreground md:hidden"
-          >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </div>
 
-      {menuOpen && (
-        <nav
-          id="mobile-nav"
-          aria-label="Primary"
-          className="border-t border-white/10 bg-background md:hidden"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setMenuOpen(false);
-          }}
+      <nav
+        aria-label="Primary"
+        className="flex items-center gap-5 border-t border-white/10 px-5 py-2.5 sm:px-8 md:hidden"
+      >
+        {NAV_LINKS.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className="claw-link text-sm font-medium text-white transition-colors hover:text-white"
+          >
+            {l.label}
+          </a>
+        ))}
+        <Link
+          to="/special-150"
+          className="claw-link text-sm font-medium text-primary transition-colors hover:text-white"
         >
-          <div className="mx-auto flex max-w-6xl flex-col px-5 py-3 sm:px-8">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setMenuOpen(false)}
-                className="claw-link border-b border-white/5 py-3 text-sm font-medium text-white transition-colors hover:text-white"
-              >
-                {l.label}
-              </a>
-            ))}
-            <Link
-              to="/special-150"
-              onClick={() => setMenuOpen(false)}
-              className="claw-link py-3 text-sm font-medium text-primary transition-colors hover:text-white"
-            >
-              Special 150
-            </Link>
-          </div>
-        </nav>
-      )}
+          Special 150
+        </Link>
+      </nav>
     </header>
   );
 }
